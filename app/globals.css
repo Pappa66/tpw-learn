@@ -1,0 +1,25 @@
+/* app/globals.css */
+
+/* Kita kosongkan direktif tailwind agar tidak build error */
+/* Styling tetap jalan karena kita pakai CDN di layout.tsx */
+
+:root {
+  --leeloo-red: #dc1a1a;
+  --shanti-green: #22c55e;
+}
+
+body {
+  background-color: black;
+  color: white;
+}
+
+/* Custom Animation tetap bisa di sini */
+@keyframes pulse-white {
+  0% { shadow: 0 0 0 0 rgba(255, 255, 255, 0.7); }
+  70% { shadow: 0 0 0 20px rgba(255, 255, 255, 0); }
+  100% { shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
+}
+
+.mic-active {
+  animation: pulse-white 2s infinite;
+}
