@@ -19,6 +19,7 @@
 
 # production
 /build
+SERVER_SETUP_GUIDE.md
 
 # misc
 .DS_Store
