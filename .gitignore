@@ -20,6 +20,8 @@
 # production
 /build
 SERVER_SETUP_GUIDE.md
+AGENTS.md
+CLAUDE.md
 
 # misc
 .DS_Store
@@ -40,3 +42,21 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+/lib/generated/prisma
+
+# SQLite
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+
+# Ollama
+ollama_data/
+ollama-linux-amd64.tar.zst
+
+# Prisma generated
+/lib/generated/prisma
+
+# Temp files
+_check*
+/tmp/

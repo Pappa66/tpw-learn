@@ -1,25 +1,24 @@
-version: '3.8'
-
+# docker-compose.yml
 services:
-  # 1. CORE APPLICATION (Next.js)
   app:
-    image: node:22-alpine
+    # Ganti ke bookworm-slim untuk mendukung native modules (glibc)
+    image: node:22-bookworm-slim
     container_name: tpw_app
     restart: unless-stopped
     ports:
-      - "80:3000"  # Akses langsung lewat IP server di port 80
+      - "80:3000"
     volumes:
       - .:/app
     working_dir: /app
-    command: sh -c "npm install && npm run build && npm start"
+    # Pastikan binding ke 0.0.0.0 agar bisa diakses dari luar
+    command: sh -c "npm install && npx next dev -H 0.0.0.0"
     environment:
       - VLLM_URL=http://llm:11434
       - STT_URL=http://stt:9000
-      - TTS_URL=http://tts:10200
     depends_on:
       - llm
+      - stt
 
-  # 2. AI SPEECH-TO-TEXT (Whisper)
   stt:
     image: onerahmet/openai-whisper-asr-webservice:latest
     container_name: tpw_stt
@@ -28,16 +27,6 @@ services:
       - ASR_MODEL=base
       - ASR_ENGINE=openai_whisper
 
-  # 3. AI TEXT-TO-SPEECH (Piper)
-  tts:
-    image: rhasspy/piper:latest
-    container_name: tpw_tts
-    restart: unless-stopped
-    command: ["--model", "zh_CN-huayan-medium.onnx", "--download-dir", "/app/models"]
-    volumes:
-      - ./piper-data:/app/models
-
-  # 4. LLM ENGINE (Evaluator / Ollama)
   llm:
     image: ollama/ollama:latest
     container_name: tpw_llm

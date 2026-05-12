@@ -1,0 +1,77 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  userId    String   @unique
+  program   String   @default("")
+  level     Int      @default(1)
+  createdAt DateTime @default(now())
+
+  milestones  Milestone[]
+  skills      Skill[]
+  assessments Assessment[]
+  history     History[]
+}
+
+model Milestone {
+  id              Int      @id @default(autoincrement())
+  userId          Int
+  areaDevelopment String
+  age             Int
+  achievement     String
+  cefrLevel       String?
+  score           Float
+  createdAt       DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Skill {
+  id            Int      @id @default(autoincrement())
+  userId        Int
+  vocabulary    Float    @default(0)
+  grammar       Float    @default(0)
+  participation Float    @default(0)
+  helpfulness   Float    @default(0)
+  pronunciation Float    @default(0)
+  intonation    Float    @default(0)
+  assessedAt    DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Assessment {
+  id               Int      @id @default(autoincrement())
+  userId           Int
+  articulationRate Float    @default(0)
+  mlu              Float    @default(0)
+  silentPauseFreq  Float    @default(0)
+  totalScore       Float    @default(0)
+  cefrLevel        String   @default("A1")
+  actflLevel       String?
+  sessionId        String?
+  createdAt        DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model History {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  mode      String
+  target    String
+  userText  String
+  score     Int
+  feedback  String
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
